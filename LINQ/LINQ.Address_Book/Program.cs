@@ -1,6 +1,6 @@
 ﻿namespace LINQ.Address_Book
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -15,19 +15,27 @@
             phoneBook.Add(new Contact("Сергей", "Брин", 799900000013, "serg@example.com"));
             phoneBook.Add(new Contact("Иннокентий", "Смоктуновский", 799900000013, "innokentii@example.com"));
 
+            /// LINQ
+            //var sortedPhoneBook = from phone in phoneBook orderby phone.Name, phone.LastName select phone;
+            /// Extention
+            var sortedPhoneBook = phoneBook.Select(s => s).OrderBy(s => s.Name).ThenBy(s => s.LastName);
+
             int pageNum;
             while (true)
             {
+                Console.Write("Введите номер страницы: ");
                 var key = Console.ReadKey().KeyChar;
                 var parsed = Int32.TryParse(key.ToString(), out pageNum);
                 Console.Clear();
 
                 IEnumerable<Contact> page = null;
 
-                if (!parsed || pageNum < 1 || pageNum > 3)
-                    Console.WriteLine("Page not found!");
+                if (!parsed)
+                    Console.WriteLine("Введите число!");
+                else if(pageNum < 1 || pageNum > 3)
+                    Console.WriteLine("Страница не найдена!");
                 else
-                    page = phoneBook.Skip((pageNum - 1) * 2).Take(2);
+                    page = sortedPhoneBook.Skip((pageNum - 1) * 2).Take(2);
 
 
                 if (page != null)
