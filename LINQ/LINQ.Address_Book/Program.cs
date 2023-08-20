@@ -29,7 +29,7 @@
                 Console.Clear();
 
                 IEnumerable<Contact> page = null;
-
+                    
                 if (!parsed)
                     Console.WriteLine("Введите число!");
                 else if(pageNum < 1 || pageNum > 3)
